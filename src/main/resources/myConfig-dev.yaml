@@ -1,0 +1,6 @@
+http:
+  port: "8081"
+  
+log:
+  region: "dev"
+  message: "Hi ..Welcome To VITech Talks , Here we are learning CI/CD Process with Azure devops"

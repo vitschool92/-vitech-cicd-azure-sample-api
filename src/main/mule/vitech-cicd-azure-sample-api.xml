@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="83d88102-d5b2-4801-991a-ea215d67b5ad" >
+		<http:listener-connection host="0.0.0.0" port="${http.port}" />
+	</http:listener-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="67e82bc3-33e6-4a7c-ae24-007dd02cbd7d" file="myConfig-dev.yaml" />
+	<flow name="vitech-cicd-azure-sample-apiFlow" doc:id="61a7f3dc-e7d0-4b03-8c49-6c1a3bac7556" >
+		<http:listener doc:name="Listener" doc:id="1c47f895-7ecd-4f27-8216-760623c6c11f" config-ref="HTTP_Listener_config" path="/welcome"/>
+		<logger level="INFO" doc:name="Logger" doc:id="f7bcd3b7-ce1c-488f-8f84-95b46a12863e" message="-----------Inside the API --------------"/>
+		<ee:transform doc:name="Transform Message" doc:id="7874eef1-8de7-4164-8550-f769a364eb09" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message" : p('log.message'),
+	"region" : p('log.region')
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
